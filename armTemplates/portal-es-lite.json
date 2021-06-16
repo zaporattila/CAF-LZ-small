@@ -986,7 +986,59 @@
                             "required": false
                         }
                     },                     
+
+		    {
+                        "name": "srvText",
+                        "type": "Microsoft.Common.TextBlock",
+                        "visible": true,
+                        "options": {
+                            "text": "Select services to deploy to Online Landing Zone."
+                        }
+                    },
                     {
+                        "name": "srvSqlDb",
+                        "type": "Microsoft.Common.OptionsGroup",
+                        "label": "Deploy Azure SQL Database",
+                        "defaultValue": "Yes (recommended)",
+                        "visible": true,
+                        "toolTip": "If 'Yes' is selected an Azure SQL Database will be deployed to Online Landing Zone.",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "Yes (recommended)",
+                                    "value": "Yes"
+                                },
+                                {
+                                    "label": "No",
+                                    "value": "No"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "srvADF",
+                        "type": "Microsoft.Common.OptionsGroup",
+                        "label": "Deploy Azure Data Factory",
+                        "defaultValue": "Yes (recommended)",
+                        "visible": true,
+                        "toolTip": "If 'Yes' is selected an Azure Data Factory will be deployed to Online Landing Zone.",
+                        "constraints": {
+                            "allowedValues": [
+                                {
+                                    "label": "Yes (recommended)",
+                                    "value": "Yes"
+                                },
+                                {
+                                    "label": "No",
+                                    "value": "No"
+                                }
+                            ]
+                        }
+                    },
+			
+			
+			
+		    {
                         "name": "azMonText",
                         "type": "Microsoft.Common.TextBlock",
                         "visible": true,
