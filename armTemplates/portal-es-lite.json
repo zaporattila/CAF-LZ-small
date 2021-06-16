@@ -985,9 +985,8 @@
                             "allowedValues": "[map(steps('lzGoalState').lzCorpSubsApi.value, (sub) => parse(concat('{\"label\":\"', sub.displayName, '\",\"description\":\"', sub.subscriptionId, '\",\"value\":\"', toLower(sub.subscriptionId), '\"}')) )]",
                             "required": false
                         }
-                    },                     
-
-		    {
+                    },
+					{
                         "name": "srvText",
                         "type": "Microsoft.Common.TextBlock",
                         "visible": true,
@@ -1300,6 +1299,10 @@
             "enableAzFw": "[steps('esConnectivityGoalState').esAzFw]",
             "enableAzFwDnsProxy": "[steps('esConnectivityGoalState').esAzFwDns]",
             "addressPrefix": "[steps('esConnectivityGoalState').esAddressHub]",
+			
+			"enableLzSqlDB": "[steps('lzGoalState').srvSqlDb]",
+			"enableLzADF": "[steps('lzGoalState').srvADF]",
+			
             "enableLzDdoS": "[steps('lzGoalState').esLzDdoS]",
             "denyPublicEndpoints": "[steps('lzGoalState').esLzPrivateLink]",
             "enableEncryptionInTransit": "[steps('lzGoalState').esEncryptionInTransit]",
