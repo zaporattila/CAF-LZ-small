@@ -578,6 +578,40 @@
                 }
             }
         },
+        
+        
+        
+        
+        {
+            "condition": "[and(not(empty(parameters('onlineLzSubscriptionId'))),equals(parameters('enableLzADF'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('enterpriseScaleCompanyPrefix'), '-online')]",
+            "name": "[variables('deploymentNames').lzAdfDeploymentName]",
+            "dependsOn": [
+                "[variables('deploymentNames').policyDeploymentName]",
+                "DeploymentDelay"
+            ],
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').lzAdf]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    },
+                    "enableLzAdf": {
+                        "value": "[parameters('enableLzAdf')]"
+                    },
+                    "onlineSubscriptionId": {
+                        "value": "[parameters('onlineLzSubscriptionId')]"
+                    }
+                }
+            }
+        },        
         {
             "condition": "[and(not(empty(parameters('platformSubscriptionId'))), or(or(or(or(or(equals(parameters('enableSecuritySolution'), 'Yes'), equals(parameters('enableAgentHealth'), 'Yes')), equals(parameters('enableChangeTracking'), 'Yes')), equals(parameters('enableUpdateMgmt'), 'Yes'), equals(parameters('enableActivityLog'), 'Yes')), equals(parameters('enableAntiMalware'), 'Yes'), equals(parameters('enableVmInsights'), 'Yes')), equals(parameters('enableServiceMap'), 'Yes'), equals(parameters('enableSqlAssessment'), 'Yes')))]",
             "type": "Microsoft.Resources/deployments",
