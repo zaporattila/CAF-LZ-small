@@ -9,38 +9,36 @@
                 "description": "Provide a prefix (max 10 characters, unique at tenant-scope) for the Management Group hierarchy and other resources created as part of Enterprise-scale."
             }
         },
+        "name": {
+            "type": "string",
+            "defaultValue": "myv2datafactory"
+        },
         "onlineSubscriptionId": {
             "type": "string",
             "maxLength": 36
         },
         "enableLzAdf": {
             "type": "string",
-            "defaultValue": "No",
+            "defaultValue": "Yes",
             "allowedValues": [
                 "Yes",
                 "No"
-            ],
-            "metadata": {
-                "."
-            }
+            ]
         }        
     },
     "variables": {
-        "workspaceName": "[concat(parameters('topLevelManagementGroupPrefix'), '-la-', parameters('managementSubscriptionId'))]",
-        "workspaceRegion": "[deployment().location]",
-        "automationAccountName": "[concat(parameters('topLevelManagementGroupPrefix'), '-a-', parameters('managementSubscriptionId'))]",
-        "automationRegion": "[deployment().location]",
-        "rgName": "[concat(parameters('topLevelManagementGroupPrefix'), '-mgmt')]",
-        "resourceDeploymentName": "[take(concat('EntScale-mgmt', deployment().name), 64)]"
+        "adfRegion": "West Europe",
+        "rgName": "[concat(parameters('topLevelManagementGroupPrefix'), '-data')]",
+        "resourceDeploymentName": "[take(concat('EntScale-data', 'adf'), 64)]"
     },
     "resources": [
         {
-            "condition": "[equals(parameters('enableLogAnalytics'), 'Yes')]",
+            "condition": "[equals(parameters('enableLzAdf'), 'Yes')]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-05-10",
             "name": "[variables('resourceDeploymentName')]",
-            "location": "eastus",
-            "subscriptionId": "[parameters('managementSubscriptionId')]",
+            "location": "[variables('adfRegion')]",
+            "subscriptionId": "[parameters('onlineSubscriptionId')]",
             "properties": {
                 "mode": "Incremental",
                 "template": {
@@ -54,68 +52,8 @@
                             "type": "Microsoft.Resources/resourceGroups",
                             "apiVersion": "2019-10-01",
                             "name": "[variables('rgName')]",
-                            "location": "[deployment().location]",
+                            "location": "[variables('adfRegion')]",
                             "properties": {}
-                        },
-                        {
-                            "type": "Microsoft.Resources/deployments",
-                            "apiVersion": "2019-10-01",
-                            "resourceGroup": "[variables('rgName')]",
-                            "name": "log-analytics",
-                            "dependsOn": [
-                                "[resourceId('Microsoft.Resources/resourceGroups/', variables('rgName'))]"
-                            ],
-                            "properties": {
-                                "mode": "Incremental",
-                                "template": {
-                                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-                                    "contentVersion": "1.0.0.0",
-                                    "parameters": {},
-                                    "variables": {},
-                                    "resources": [
-                                        {
-                                            "apiversion": "2015-10-31",
-                                            "location": "[variables('automationRegion')]",
-                                            "name": "[variables('automationAccountName')]",
-                                            "type": "Microsoft.Automation/automationAccounts",
-                                            "comments": "Automation account for ",
-                                            "properties": {
-                                                "sku": {
-                                                    "name": "OMS"
-                                                }
-                                            }
-                                        },
-                                        {
-                                            "apiVersion": "2017-03-15-preview",
-                                            "location": "[variables('workspaceRegion')]",
-                                            "name": "[variables('workspaceName')]",
-                                            "type": "Microsoft.OperationalInsights/workspaces",
-                                            "properties": {
-                                                "sku": {
-                                                    "name": "pernode"
-                                                },
-                                                "enableLogAccessUsingOnlyResourcePermissions": true,
-                                                "retentionInDays": "[int(parameters('retentionInDays'))]"
-                                            },
-                                            "resources": [
-                                                {
-                                                    "name": "Automation",
-                                                    "type": "linkedServices",
-                                                    "apiVersion": "2015-11-01-preview",
-                                                    "dependsOn": [
-                                                        "[resourceId('Microsoft.OperationalInsights/workspaces/', variables('workspaceName'))]",
-                                                        "[resourceId('Microsoft.Automation/automationAccounts/', variables('AutomationAccountName'))]"
-                                                    ],
-                                                    "properties": {
-                                                        "resourceId": "[concat('/subscriptions/', parameters('managementSubscriptionId'), '/resourceGroups/', variables('rgName'), '/providers/Microsoft.Automation/automationAccounts/', variables('AutomationAccountName'))]"
-                                                    }
-                                                }
-                                            ]
-                                        }
-                                    ],
-                                    "outputs": {}
-                                }
-                            }
                         }
                     ],
                     "outputs": {}
