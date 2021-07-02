@@ -41,23 +41,7 @@
             "subscriptionId": "[parameters('onlineSubscriptionId')]",
             "properties": {
                 "mode": "Incremental",
-                "template": {
-                    "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {
-                        },
-                    "variables": {},
-                    "resources": [
-                        {
-                            "type": "Microsoft.Resources/resourceGroups",
-                            "apiVersion": "2019-10-01",
-                            "name": "[variables('rgName')]",
-                            "location": "[variables('adfRegion')]",
-                            "properties": {}
-                        }
-                    ],
-                    "outputs": {}
-                }
+                "template": {}
             }
         }
     ],
