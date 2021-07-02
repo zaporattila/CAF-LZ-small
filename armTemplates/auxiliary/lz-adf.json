@@ -44,8 +44,7 @@
                 "template": {
                     "$schema": "http://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json",
                     "contentVersion": "1.0.0.0",
-                    "parameters": {
-                        },
+                    "parameters": {},
                     "variables": {},
                     "resources": [
                         {
@@ -54,6 +53,37 @@
                             "name": "[variables('rgName')]",
                             "location": "[variables('adfRegion')]",
                             "properties": {}
+                        },
+                        {
+                            "type": "Microsoft.Resources/deployments",
+                            "apiVersion": "2019-10-01",
+                            "resourceGroup": "[variables('rgName')]",
+                            "name": "data-factory",
+                            "dependsOn": [
+                                "[resourceId('Microsoft.Resources/resourceGroups/', variables('rgName'))]"
+                            ],
+                            "properties": {
+                                "mode": "Incremental",
+                                "template": {
+                                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                                    "contentVersion": "1.0.0.0",
+                                    "parameters": {},
+                                    "variables": {},
+                                    "resources": [
+                                        {
+                                            "apiVersion": "2018-06-01",
+                                            "name": "[parameters('name')]",
+                                            "location": "[variables('adfRegion')]",
+                                            "type": "Microsoft.DataFactory/factories",
+                                            "identity": {
+                                                "type": "SystemAssigned"
+                                            },
+                                            "properties": {}
+                                        }
+                                    ],
+                                    "outputs": {}
+                                }
+                            }
                         }
                     ],
                     "outputs": {}
