@@ -27,9 +27,9 @@
         }        
     },
     "variables": {
-        "adfRegion": "West Europe",
+        "adfRegion": "[deployment().location]",
         "rgName": "[concat(parameters('topLevelManagementGroupPrefix'), '-data')]",
-        "resourceDeploymentName": "[take(concat('EntScale-data', 'adf'), 64)]"
+        "resourceDeploymentName": "[take(concat('EntScale-data', deployment().name), 64)]"
     },
     "resources": [
         {
