@@ -14,8 +14,8 @@
             "defaultValue": "myv2datafactory"
         },
         "onlineSubscriptionId": {
-            "type": "string",
-            "maxLength": 36
+            "type": "array",
+            "defaultValue": []
         },
         "enableLzAdf": {
             "type": "string",
@@ -38,7 +38,7 @@
             "apiVersion": "2019-05-10",
             "name": "[variables('resourceDeploymentName')]",
             "location": "[variables('adfRegion')]",
-            "subscriptionId": "[parameters('onlineSubscriptionId')]",
+            "subscriptionId": "[parameters('onlineSubscriptionId')[1]]",
             "properties": {
                 "mode": "Incremental",
                 "template": {}
