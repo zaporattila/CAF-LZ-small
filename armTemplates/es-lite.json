@@ -578,10 +578,6 @@
                 }
             }
         },
-        
-        
-        
-        
         {
             "condition": "[and(not(empty(parameters('onlineLzSubscriptionId'))),equals(parameters('enableLzADF'), 'Yes'))]",
             "type": "Microsoft.Resources/deployments",
@@ -605,6 +601,36 @@
                     },
                     "enableLzAdf": {
                         "value": "[parameters('enableLzAdf')]"
+                    },
+                    "onlineSubscriptionId": {
+                        "value": "[parameters('onlineLzSubscriptionId')]"
+                    }
+                }
+            }
+        },        
+        {
+            "condition": "[and(not(empty(parameters('onlineLzSubscriptionId'))),equals(parameters('enableLzSqlDB'), 'Yes'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-05-01",
+            "scope": "[concat('Microsoft.Management/managementGroups/', parameters('enterpriseScaleCompanyPrefix'), '-online')]",
+            "name": "[variables('deploymentNames').lzSqlDeploymentName]",
+            "dependsOn": [
+                "[variables('deploymentNames').policyDeploymentName]",
+                "DeploymentDelay"
+            ],
+            "location": "[deployment().location]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[variables('deploymentUris').lzSql]"
+                },
+                "parameters": {
+                    "topLevelManagementGroupPrefix": {
+                        "value": "[parameters('enterpriseScaleCompanyPrefix')]"
+                    },
+                    "enableLzSqlDB": {
+                        "value": "[parameters('enableLzSqlDB')]"
                     },
                     "onlineSubscriptionId": {
                         "value": "[parameters('onlineLzSubscriptionId')]"
