@@ -89,8 +89,9 @@
                                             "location": "[variables('sqlRegion')]",
                                             "properties": {
                                                 "administratorLogin": "[parameters('sqlServerAdminUser')]",
-                                                "administratorLoginPassword": "[parameters('sqlServerAdminUserPassword')]"
-
+                                                "administratorLoginPassword": "[parameters('sqlServerAdminUserPassword')]",
+                                                "publicNetworkAccess": "Disabled",
+                                                "restrictOutboundNetworkAccess": "Disabled"
                                             }
                                         },
                                         {
