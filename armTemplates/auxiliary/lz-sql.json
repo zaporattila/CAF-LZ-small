@@ -84,7 +84,7 @@
                                             "properties": {
                                                 "administratorLogin": "tstadminusr",
                                                 "version": "12.0",
-                                                "publicNetworkAccess": "Enabled",
+                                                "publicNetworkAccess": "Disabled",
                                                 "restrictOutboundNetworkAccess": "Disabled"
                                             }
                                         },
