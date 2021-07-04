@@ -91,7 +91,7 @@
                                         {
                                             "type": "Microsoft.Sql/servers/databases",
                                             "apiVersion": "2021-02-01-preview",
-                                            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabaseName')]",
+                                            "name": "[concat(parameters('sqlServerName'), '/', parameters('sqlDatabaseName'))]",
                                             "location": "[variables('sqlRegion')]",
                                             "dependsOn": [
                                                 "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
